@@ -1,0 +1,99 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{% block title %}Mail{% endblock %}</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'mail/css/styles.css' %}">
+    <script src="{% static 'mail/js/inbox.js' %}"></script>
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    {% block script %}
+    {% endblock %}
+</head>
+<body>
+    <div class="container">
+        {% block navbar %}
+        <a class="navbar-brand" href="#">{{ request.user.username }}</a>
+        <div class="email-app mb-4">
+    
+        <nav>
+            <!-- Start of your navbar items, but structured as a list -->
+            <ul class="nav" style="">
+                <!-- Compose button, adapted from the template -->
+                <li class="nav-item">
+                    <a href="#" class="btn btn-danger btn-block" id="compose">Compose</a>
+                </li>
+        
+                <!-- Inbox button, converted to list item -->
+                <li class="nav-item">
+                    <a class="nav-link" href="#" id="inbox">
+                        <!-- Agregar el SVG -->
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M3.75 5.25L3 6V18L3.75 18.75H20.25L21 18V6L20.25 5.25H3.75ZM4.5 7.6955V17.25H19.5V7.69525L11.9999 14.5136L4.5 7.6955ZM18.3099 6.75H5.68986L11.9999 12.4864L18.3099 6.75Z" fill="#080341"/>
+                        </svg>
+                        <!-- Fin del SVG -->
+                        Inbox
+                        <!-- Puedes agregar un badge dinámicamente si es necesario -->
+                        <span class="badge badge-danger">4</span>
+                    </a>
+                </li>
+        
+                <li class="nav-item">
+                    <a class="nav-link" href="#" id="sent">
+                        <!-- Agregar el SVG -->
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="none">
+                            <path d="M9 9H6M9 12H4M9 15H6M12.9825 7.61408L20 12L12.9825 16.3859C12.6108 16.6183 12.1412 16.2938 12.2272 15.8639L13 12L12.2272 8.13613C12.1412 7.70625 12.6108 7.38173 12.9825 7.61408Z" stroke="#464455" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <!-- Fin del SVG -->
+                        </i>Sent
+                    </a>
+                </li>
+                
+        
+                <!-- Archived button, converted to list item -->
+                <li class="nav-item">
+                    <a class="nav-link" href="#" id="archived">
+                        <!-- Agregar el SVG -->
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M6.75 6L7.5 5.25H16.5L17.25 6V19.3162L12 16.2051L6.75 19.3162V6ZM8.25 6.75V16.6838L12 14.4615L15.75 16.6838V6.75H8.25Z" fill="#080341"/>
+                        </svg>
+                        <!-- Fin del SVG -->
+                        Archived
+                    </a>
+                </li>
+                
+        
+                <!-- Log out, converted to list item and retain the dynamic URL generation -->
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'logout' %}" id="logout">
+                        <!-- Agregar el SVG -->
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M20 23L12 23C11.4477 23 11 22.5523 11 22C11 21.4477 11.4477 21 12 21L20 21C20.5523 21 21 20.5523 21 20L21 4C21 3.44771 20.5523 3 20 3L12 3C11.4477 3 11 2.55228 11 2C11 1.44772 11.4477 1 12 1L20 0.999999C21.6569 0.999999 23 2.34315 23 4L23 20C23 21.6569 21.6569 23 20 23Z" fill="#0F0F0F"/>
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M18.6881 10.6901C19.3396 11.4418 19.3396 12.5581 18.6881 13.3098L14.5114 18.1291C13.2988 19.5282 11 18.6707 11 16.8193L11 15L5 15C3.89543 15 3 14.1046 3 13L3 11C3 9.89541 3.89543 8.99998 5 8.99998L11 8.99998L11 7.18071C11 5.3293 13.2988 4.47176 14.5114 5.87085L18.6881 10.6901ZM16.6091 12.6549C16.9348 12.279 16.9348 11.7209 16.6091 11.345L13 7.18071L13 9.49998C13 10.3284 12.3284 11 11.5 11L5 11L5 13L11.5 13C12.3284 13 13 13.6716 13 14.5L13 16.8193L16.6091 12.6549Z" fill="#0F0F0F"/>
+                        </svg>
+                        <!-- Fin del SVG -->
+                        </i>Log Out
+                    </a>
+                </li>
+        </nav>
+    
+    
+        <main class="inbox">
+        {% endblock %}
+        {% block body %}
+        {% endblock %}
+    </div>
+    <script>
+        // Obtén el token CSRF del atributo meta
+        const csrftoken = document.querySelector('[name=csrf-token]').getAttribute('content');
+        // Ahora csrftoken contiene el token CSRF que puedes utilizar en tu función handleTrash
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>    
+<script src="{% static 'mail/js/inbox.js' %}"></script>
+</body>
+</html>
